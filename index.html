@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ส่งข้อความไปยังชามิก</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #6a5acd;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.2rem;
+      background-color: #6a5acd;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #4b3b8b;
+    }
+
+    .status {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 1.1rem;
+      color: #6a5acd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ส่งข้อความไปยัง Discord ชามิก</h1>
+    <textarea id="messageContent" placeholder="พิมพ์ข้อความที่คุณต้องการส่งที่นี่"></textarea>
+    <button onclick="sendMessage()">ส่งข้อความ</button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    const webhookUrl = 'https://discord.com/api/webhooks/1368892979686801429/58MEJoO7ULnLO02jnCu26bx53uRpTs8GQIZ-QPRCpaW5j3hXw8nCXYbj8qMP_QCOP33o';
+
+    function sendMessage() {
+      const messageContent = document.getElementById('messageContent').value;
+      const message = {
+        content: messageContent || "ไม่มีข้อความ"
+      };
+
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('status').innerHTML = 'ข้อความส่งสำเร็จ!';
+        document.getElementById('messageContent').value = ''; // Clear the textarea
+      })
+      .catch((error) => {
+        document.getElementById('status').innerHTML = 'เกิดข้อผิดพลาดในการส่งข้อความ';
+        console.error('เกิดข้อผิดพลาด:', error);
+      });
+    }
+  </script>
+</body>
+</html>
