@@ -3,93 +3,191 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ส่งข้อความไปยังชามิก</title>
+  <title>ถึงคุณซันที่เรารักมาก</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      padding: 20px;
+      margin: 0;
+      font-family: 'Sarabun', sans-serif;
+      background: linear-gradient(135deg, #c3c9ff, #e9d7ff);
+      overflow: hidden;
+      height: 100vh;
     }
 
     .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 30px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      max-width: 680px;
+      margin: 60px auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px 30px;
+      border-radius: 25px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
     h1 {
-      text-align: center;
-      color: #6a5acd;
+      color: #7f79ff;
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+    }
+
+    p.sub {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 20px;
     }
 
     textarea {
       width: 100%;
-      height: 150px;
-      padding: 10px;
-      border-radius: 10px;
+      height: 130px;
+      padding: 15px;
+      font-size: 1.05rem;
+      border-radius: 12px;
       border: 1px solid #ccc;
-      font-size: 1rem;
+      background: #f8f7ff;
+      resize: none;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
     }
 
     button {
-      width: 100%;
-      padding: 12px;
-      font-size: 1.2rem;
-      background-color: #6a5acd;
+      padding: 14px 28px;
+      background-color: #8e7dff;
       color: white;
+      font-size: 1.1rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 15px;
       cursor: pointer;
-      margin-top: 10px;
+      transition: background 0.3s ease;
     }
 
     button:hover {
-      background-color: #4b3b8b;
+      background-color: #7360ff;
     }
 
     .status {
-      margin-top: 10px;
-      text-align: center;
-      font-size: 1.1rem;
-      color: #6a5acd;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #5f5f5f;
+    }
+
+    .heart {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      background-color: pink;
+      transform: rotate(45deg);
+      animation: floatUp 6s linear infinite;
+      opacity: 0.6;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background-color: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before { top: -9px; left: 0; }
+    .heart::after { top: 0; left: -9px; }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0.6; }
+      100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; }
+    }
+
+    @media (max-width: 500px) {
+      textarea { height: 100px; }
+      .buttons { flex-direction: column; }
+      button { width: 100%; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>ส่งข้อความไปยัง Discord ชามิก</h1>
-    <textarea id="messageContent" placeholder="พิมพ์ข้อความที่คุณต้องการส่งที่นี่"></textarea>
-    <button onclick="sendMessage()">ส่งข้อความ</button>
+    <h1>ถึงคุณซันที่เรารักมาก</h1>
+    <p class="sub">เขียนหรือสุ่มความในใจน่ารักๆ แล้วส่งถึงคุณชามิกได้นะ</p>
+    <textarea id="messageContent" placeholder="เขียนอะไรดีน้า..."></textarea>
+    <div class="buttons">
+      <button onclick="sendMessage()">ส่งให้เลย</button>
+      <button onclick="randomLove()">สุ่มคำบอกรัก</button>
+    </div>
     <div class="status" id="status"></div>
   </div>
 
+  <!-- หัวใจลอย -->
+  <script>
+    setInterval(() => {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.backgroundColor = ['#ffc0cb', '#ffb6c1', '#dda0dd', '#e0b3ff'][Math.floor(Math.random() * 4)];
+      heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }, 300);
+  </script>
+
+  <!-- เสียง -->
+  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_09d6aaf50f.mp3?filename=ui-confirmation-alert-1-261722.mp3"></audio>
+
+  <!-- JavaScript -->
   <script>
     const webhookUrl = 'https://discord.com/api/webhooks/1368892979686801429/58MEJoO7ULnLO02jnCu26bx53uRpTs8GQIZ-QPRCpaW5j3hXw8nCXYbj8qMP_QCOP33o';
+    const status = document.getElementById("status");
+    const clickSound = document.getElementById("clickSound");
+    const messageBox = document.getElementById("messageContent");
+
+    const loveMessages = [
+      "คิดถึงคุณซันจังเลย", "อยากอยู่ใกล้ๆ ทุกวันเลย", "คุณคือโลกทั้งใบของเรา",
+      "ยิ่งมองยิ่งรัก", "คุณน่ารักที่สุดในจักรวาล", "เราโชคดีที่มีคุณซัน", 
+      "อยากให้รู้ว่ารักมากจริงๆ", "หัวใจเรามีแต่ชื่อคุณ", "ขออยู่ข้างๆ คุณตลอดไป", 
+      "คุณคือคนพิเศษที่สุดของเรา", "อยากจับมือคุณไม่ปล่อยเลย", 
+      "ซันคือแสงที่อบอุ่นที่สุด", "ยิ่งอยู่ใกล้ ยิ่งรักมากขึ้นทุกวัน", 
+      "คุณคือคนที่เราฝันถึงเสมอ", "รักนะคุณซัน", "อยากให้คุณยิ้มในทุกๆ วัน"
+    ];
+
+    function randomLove() {
+      const randomMsg = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+      messageBox.value = randomMsg;
+      clickSound.play();
+    }
 
     function sendMessage() {
-      const messageContent = document.getElementById('messageContent').value;
-      const message = {
-        content: messageContent || "ไม่มีข้อความ"
+      const input = messageBox.value.trim();
+      const secret = btoa("รักน้ารักมากๆด้วย");
+
+      if (input === "") {
+        status.innerText = "พิมพ์อะไรก่อนน้า~";
+        return;
+      }
+
+      const payload = {
+        content: `**ถึงคุณซันจากใจเรา**:\n${input}\n\n\`ข้อความลับ: ${secret}\``
       };
 
       fetch(webhookUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('status').innerHTML = 'ข้อความส่งสำเร็จ!';
-        document.getElementById('messageContent').value = ''; // Clear the textarea
+      .then(() => {
+        status.innerText = "ส่งเรียบร้อยแล้วนะจ๊ะ~";
+        messageBox.value = "";
+        clickSound.play();
       })
-      .catch((error) => {
-        document.getElementById('status').innerHTML = 'Message sent successfully';
-        console.error('เกิดข้อผิดพลาด:', error);
+      .catch(() => {
+        status.innerText = "มีบางอย่างผิดพลาด ลองใหม่ได้เลยน้า~";
       });
     }
   </script>
